@@ -574,3 +574,4 @@ C:/Users/asd/Desktop/AKD/EKStore/EKStore/obj/Debug/net8.0/scopedcss/Views/Shared
 /Users/ahmet/Desktop/DepoYonetimi-git/EKStore/obj/Debug/net8.0/EKStore.csproj.Up2Date
 /Users/ahmet/Desktop/DepoYonetimi-git/EKStore/obj/Debug/net8.0/EKStore.genruntimeconfig.cache
 /Users/ahmet/Desktop/DepoYonetimi-git/EKStore/obj/Debug/net8.0/ref/EKStore.dll
+/Users/ahmet/Desktop/DepoYonetimi-git/EKStore/obj/Debug/net8.0/EKStore.sourcelink.json
