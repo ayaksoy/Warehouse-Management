@@ -1,0 +1,47 @@
+﻿@model EKStore.Models.Category
+
+<div class="row">
+    <div class="col-12 mb-3">
+        <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="btn btn-dark btn-sm">Back To List</a>
+    </div>
+    <div class="col-md-8 ps-5">
+        <h2>@Model.Name</h2>
+        <hr />
+        <form asp-area="Admin" asp-controller="Category" asp-action="Edit" enctype="multipart/form-data">
+            <table class="table">
+                <tr>
+                    <th>Name</th>
+                    <td>
+                        <input type="text" name="Name" id="Name" value="@Model.Name" class="form-control" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>
+                        <input type="text" name="Description" id="Description" value="@Model.Description" class="form-control" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>Status</th>
+                    <td>
+                        <input type="checkbox" asp-for="IsStatus" data-val="true" value="true" class="form-check-input" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>Image</th>
+                    <td>
+                        <input type="file" name="Image" id="Image" class="form-control" />
+                    </td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td>
+                        <input type="submit" value="Edit" class="form-control btn btn-success" />
+                    </td>
+                </tr>
+                <input type="hidden" value="@Model.Id" name="Id" id="Id" />
+            </table>
+            <label>@TempData["Message"]</label>
+        </form>
+    </div>
+</div>
