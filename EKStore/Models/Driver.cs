@@ -11,5 +11,7 @@ namespace EKStore.Models
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public List<Shipment>? Shipments { get; set; }
+        public bool IsDelete { get; set; }
+        public bool IsStatus { get; set; }
     }
 }
