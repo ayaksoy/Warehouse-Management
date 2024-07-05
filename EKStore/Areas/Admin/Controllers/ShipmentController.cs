@@ -8,19 +8,18 @@ using EKStore.Data;
 using EKStore.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace EKStore.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = OtherRoles.Role_Admin)]
-    public class WarehouseController : Controller
+    public class ShipmentController : Controller
     {
         private readonly ApplicationDbContext db;
-        private readonly IWarehouseService service;
+        private readonly IAdminShipmentService service;
 
-        public WarehouseController(ApplicationDbContext db, IWarehouseService service)
+        public ShipmentController(ApplicationDbContext db, IAdminShipmentService service)
         {
             this.db = db;
             this.service = service;
@@ -32,80 +31,67 @@ namespace EKStore.Areas.Admin.Controllers
             return View(list);
         }
 
-        // GET: WarehouseController/Details/5
+        // GET: ShipmentController/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: WarehouseController/Create
+        // GET: ShipmentController/Create
         [Authorize(Roles = OtherRoles.Role_Admin)]
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: WarehouseController/Create
+        // POST: ShipmentController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(Warehouse warehouse)
+        public async Task<ActionResult> Create(Shipment shipment)
         {
             if (ModelState.IsValid)
             {
                 var files = HttpContext.Request.Form.Files; ;
 
-                TempData["Message"] = await service.AddAsync(warehouse) ? "warehouse Added Successful" : "";
+                TempData["Message"] = await service.AddAsync(shipment) ? "warehouse Added Successful" : "";
             }
             return View();
         }
 
-        // GET: WarehouseController/Edit/5
+        // GET: ShipmentController/Edit/5
         public async Task<ActionResult> Edit(int id)
         {
-            var warehouse = await service.GetByIdAsync(id);
-            if (warehouse == null)
+            var shipment = await service.GetByIdAsync(id);
+            if (shipment == null)
             {
                 return NotFound();
             }
-            return View(warehouse);
+            return View(shipment);
         }
 
-        // POST: WarehouseController/Edit/5
+        // POST: ShipmentController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(Warehouse warehouse)
+        public async Task<ActionResult> Edit(Shipment shipment)
         {
             if (ModelState.IsValid)
             {
                 var files = HttpContext.Request.Form.Files;
 
-                TempData["Message"] = await service.UpdateAsync(warehouse) ? "warehouse Edit Successfull" : "Error";
+                TempData["Message"] = await service.UpdateAsync(shipment) ? "shipment Edit Successfull" : "Error";
             }
 
-            return View(warehouse);
+            return View(shipment);
 
         }
 
-        // GET: WarehouseController/Delete/5
+        // GET: ShipmentController/Delete/5
         public async Task<ActionResult> Delete(int id)
         {
             var result = await service.DeleteAsync(id);
-            TempData["Message"] = result ? "warehouse Deleted Successful" : "Not Found warehouse";
+            TempData["Message"] = result ? "shipment Deleted Successful" : "Not Found shipment";
 
             return RedirectToAction("Index");
-        }
-        public IActionResult Detail(int id)
-        {
-            var warehouse = db.Warehouse
-                .Include(w => w.Products) // Ensure products are included
-                .FirstOrDefault(w => w.Id == id);
-
-            if (warehouse == null)
-            {
-                return NotFound();
-            }
-
-            return View(warehouse);
         }
 
     }

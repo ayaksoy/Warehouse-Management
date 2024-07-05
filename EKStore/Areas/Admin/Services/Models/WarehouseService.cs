@@ -53,9 +53,10 @@ namespace EKStore.Areas.Admin.Services.Models
 
         public async Task<List<Warehouse>> GetAllAsync()
         {
-            var list =await db.Warehouse.Where(x => x.IsDelete == false).ToListAsync();
+            var list =await db.Warehouse.Where(c => !c.IsDelete).Include(x => x.Location).ToListAsync();
             return list;
         }
+        
 
         public async Task<Warehouse> GetByIdAsync(int id)
         {
@@ -65,14 +66,18 @@ namespace EKStore.Areas.Admin.Services.Models
 
         public async Task<bool> UpdateAsync(Warehouse warehouse)
         {
-            var update =await db.Warehouse.FirstOrDefaultAsync(x => x.Id == warehouse.Id);
-            if(update ==null)
-                return false;
-            update.Name = warehouse.Name;
-            update.IsStatus = warehouse.IsStatus;
-            update.LocationId = warehouse.LocationId;
-            update.Products = warehouse.Products;
-            return true;
+            Warehouse updateWarehouse=db.Warehouse.FirstOrDefault(c=>c.Id == warehouse.Id && !c.IsDelete);
+            var result = false;
+            if(updateWarehouse!=null)
+            {
+                updateWarehouse.Name=warehouse.Name;
+                updateWarehouse.LocationId = warehouse.LocationId;
+                updateWarehouse.IsStatus=warehouse.IsStatus;
+                db.SaveChanges();
+                result=true;
+            }
+
+            return result;
         }
     }
 }

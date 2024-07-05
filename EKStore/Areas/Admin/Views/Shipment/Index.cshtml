@@ -1,4 +1,4 @@
-﻿@model IEnumerable<EKStore.Models.Product>
+﻿@model IEnumerable<EKStore.Models.Shipment>
 
 @{
     ViewData["Title"] = "Index";
@@ -18,22 +18,23 @@
                 @Html.DisplayNameFor(model => model.Id)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.FromWarehouseId)
+
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                @Html.DisplayNameFor(model => model.ToWarehouseId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Category)
+                @Html.DisplayNameFor(model => model.ShipmentDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Warehouse)
+                @Html.DisplayNameFor(model => model.Vehicle)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Quantity)
+                @Html.DisplayNameFor(model => model.Driver)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsStatus)
+                @Html.DisplayNameFor(model => model.Cost)
             </th>
             <th></th>
         </tr>
@@ -46,27 +47,27 @@
                     @Html.DisplayFor(modelItem => item.Id)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
+                    @Html.DisplayFor(modelItem => item.FromWarehouseId)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Description)
+                    @Html.DisplayFor(modelItem => item.ToWarehouseId)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Category.Name)
+                    @Html.DisplayFor(modelItem => item.ShipmentDate)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Warehouse.Name)
+                    @Html.DisplayFor(modelItem => item.Vehicle.LicensePlate)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Quantity)
+                    @Html.DisplayFor(modelItem => item.Driver.FirstName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.IsStatus)
+                    @Html.DisplayFor(modelItem => item.Cost)
                 </td>
                 <td>
-                    <a asp-area="Admin" asp-controller="Product" asp-action="Edit" asp-route-id="@item.Id"
+                    <a asp-area="Admin" asp-controller="Warehouse" asp-action="Edit" asp-route-id="@item.Id"
                         class="btn btn-primary btn-sm">Edit</a>
-                    <a asp-area="Admin" asp-controller="Product" asp-action="Delete" asp-route-id="@item.Id"
+                    <a asp-area="Admin" asp-controller="Warehouse" asp-action="Delete" asp-route-id="@item.Id"
                         class="btn btn-danger btn-sm">Delete</a>
                 </td>
             </tr>

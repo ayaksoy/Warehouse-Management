@@ -49,12 +49,6 @@ namespace EKStore.Areas.Admin.Services.Models
         public Task<List<Product>> GetAllAsync()
         {
             var list = db.Product.Where(c => !c.IsDelete).Include(x => x.Category).Include(x => x.Warehouse).ToListAsync();
-
-            foreach(var item in list.Result)
-            {
-                item.Category = db.Category.FirstOrDefault(c => c.Id == item.CategoryId);
-                item.Warehouse = db.Warehouse.FirstOrDefault(c => c.Id == item.WarehouseId);
-            }
             return list;
         }
 

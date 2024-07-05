@@ -18,19 +18,35 @@
                 <tr>
                     <th>Description</th>
                     <td>
-                        <input type="text" name="Description" id="Description" value="@Model.Description" class="form-control" />
+                        <input type="text" name="Description" id="Description" value="@Model.Description"
+                            class="form-control" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>Quantity</th>
+                    <td>
+                        <input type="text" name="Quantity" id="Quantity" value="@Model.Quantity" class="form-control" />
                     </td>
                 </tr>
                 <tr>
                     <th>Status</th>
                     <td>
-                        <input type="checkbox" asp-for="IsStatus" data-val="true" value="true" class="form-check-input" />
+                        <input type="checkbox" asp-for="IsStatus" data-val="true" value="true"
+                            class="form-check-input" />
                     </td>
                 </tr>
                 <tr>
-                    <th>Image</th>
+                    <th>CategoryId</th>
                     <td>
-                        <input type="file" name="Image" id="Image" class="form-control" />
+                        <input type="text" name="CategoryId" id="CategoryId" value="@Model.CategoryId"
+                            class="form-control" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>WarehouseId</th>
+                    <td>
+                        <input type="text" name="WarehouseId" id="WarehouseId" value="@Model.WarehouseId"
+                            class="form-control" />
                     </td>
                 </tr>
                 <tr>

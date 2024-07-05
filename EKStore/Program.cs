@@ -37,6 +37,8 @@ namespace EKStore
             builder.Services.AddSingleton<IEmailSender, EmailSender>();
             builder.Services.AddTransient<IAdminCategoryService, AdminCategoryService>();
             builder.Services.AddTransient<IAdminProductService, AdminProductService>();
+            builder.Services.AddTransient<IWarehouseService, WarehouseService>();
+            builder.Services.AddTransient<IAdminShipmentService, AdminShipmentService>();
             builder.Services.AddScoped<UploadImage, EKStore.GenericModels.UploadImage>();
 
 
