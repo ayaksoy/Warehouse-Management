@@ -10,7 +10,7 @@ namespace EKStore.Models
         public int Id { get; set; }
         public int FromWarehouseId { get; set; }
         public int ToWarehouseId { get; set; }
-        public DateTime ShipmentDate { get; set; }
+        public DateTime ShipmentDate { get; set; } = DateTime.Now;
         public int VehicleId { get; set; }
         public Vehicle? Vehicle { get; set; }
         public int DriverId { get; set; }
