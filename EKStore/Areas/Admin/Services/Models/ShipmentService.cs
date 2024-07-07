@@ -41,20 +41,16 @@ namespace EKStore.Areas.Admin.Services.Models
         public async Task<bool> AddAsync(Shipment shipment)
         {
             var result = false;
-            try{
-            var to = await db.Warehouse.FindAsync(shipment.ToWarehouseId);
-            foreach (var shipmentProduct in shipment.ShipmentProducts)
+            if(shipment.FromWarehouseId != null && shipment.ToWarehouseId != null)
             {
-                var product = await db.Product.FindAsync(shipmentProduct.ProductId);
-                product.WarehouseId = to.Id;
+                db.Shipment.Add(shipment);
+                await db.SaveChangesAsync();
+                result = true;
             }
-            result = true;
-            }
-            catch (Exception)
+            else
             {
                 result = false;
             }
-            db.SaveChanges();
             return result;
         }
 

@@ -39,6 +39,7 @@ namespace EKStore
             builder.Services.AddTransient<IAdminProductService, AdminProductService>();
             builder.Services.AddTransient<IWarehouseService, WarehouseService>();
             builder.Services.AddTransient<IAdminShipmentService, AdminShipmentService>();
+            builder.Services.AddTransient<IShipmentProductService, ShipmentProductService>();
             builder.Services.AddScoped<UploadImage, EKStore.GenericModels.UploadImage>();
 
 

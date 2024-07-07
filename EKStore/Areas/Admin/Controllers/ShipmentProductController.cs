@@ -26,7 +26,7 @@ namespace EKStore.Areas.Admin.Controllers
         // GET: ProductController
         public async Task<ActionResult> Index()
         {
-            var list=await service.GetAllAsync();
+            var list = await service.GetAllAsync();
             return View(list);
         }
 
@@ -46,21 +46,22 @@ namespace EKStore.Areas.Admin.Controllers
         // POST: ProductController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(ShipmentProduct shipmentProduct)
+        public async Task<IActionResult> Create(ShipmentProduct shipmentProduct)
         {
-            if (ModelState.IsValid)
+            if (shipmentProduct == null)
             {
-                var files=HttpContext.Request.Form.Files;;
-
-                TempData["Message"] = await service.AddAsync(shipmentProduct) ? "Shipmentproduct Added Successful" : "";
+                TempData["Message"] = "ShipmentProduct cannot be null.";
+                return View();
             }
+
+            TempData["Message"] = await service.AddAsync(shipmentProduct) ? "ShipmentProduct Added Successfully" : "Failed to add ShipmentProduct.";
             return View();
         }
 
         // GET: ProductController/Edit/5
         public async Task<ActionResult> Edit(int id)
         {
-            var Shipmentproduct= await service.GetByIdAsync(id);
+            var Shipmentproduct = await service.GetByIdAsync(id);
             if (Shipmentproduct == null)
             {
                 return NotFound();
@@ -71,9 +72,9 @@ namespace EKStore.Areas.Admin.Controllers
         // GET: ProductController/Delete/5
         public async Task<ActionResult> Delete(int id)
         {
-            var result=await service.DeleteAsync(id);
+            var result = await service.DeleteAsync(id);
             TempData["Message"] = result ? "Shipmentproduct Deleted Successful" : "Not Found Shipmentproduct";
-            
+
             return RedirectToAction("Index");
         }
 
