@@ -11,93 +11,106 @@ namespace EKStore.Areas.Admin.Services.Models
 {
     public class ShipmentProductService : IShipmentProductService
     {
-        ApplicationDbContext db;
+        private readonly ApplicationDbContext db;
 
         public ShipmentProductService(ApplicationDbContext db)
         {
             this.db = db;
         }
-        public Task<bool> AddAsync(ShipmentProduct shipmentProduct)
+
+        public async Task<bool> AddAsync(ShipmentProduct shipmentProduct)
         {
             if (shipmentProduct == null)
             {
                 throw new ArgumentNullException(nameof(shipmentProduct), "ShipmentProduct is null.");
             }
 
-            if (shipmentProduct.Product == null)
+            var product = await db.Product.FindAsync(shipmentProduct.ProductId);
+            if (product == null)
             {
                 throw new ArgumentNullException(nameof(shipmentProduct.Product), "Product in ShipmentProduct is null.");
             }
+            shipmentProduct.Product = product;
+
+            var shipment = await db.Shipment.FindAsync(shipmentProduct.ShipmentId);
+            if (shipment == null)
+            {
+                throw new ArgumentNullException(nameof(shipmentProduct.Shipment), "Shipment in ShipmentProduct is null.");
+            }
+            shipmentProduct.Shipment = shipment;
 
             if (shipmentProduct.Product.Quantity == null)
             {
                 throw new ArgumentNullException(nameof(shipmentProduct.Product.Quantity), "Quantity in Product is null.");
             }
-            var result = false;
-            db.ShipmentProduct.Include(x => x.Product).Include(x => x.Shipment);
-            if (shipmentProduct.Quantity < shipmentProduct.Product.Quantity)
+
+            bool result = false;
+
+            if (shipmentProduct.Quantity <= shipmentProduct.Product.Quantity)
             {
-                var to = db.Warehouse.Find(shipmentProduct.Shipment.ToWarehouseId);
-                var product = db.Product.Find(shipmentProduct.ProductId);
-                Product product1 = new Product();
-                product1.Name = product.Name;
-                product1.Quantity = shipmentProduct.Quantity;
-                product1.Description = product.Description;
-                product1.CategoryId = product.CategoryId;
-                product1.WarehouseId = to.Id;
-                db.Product.Add(product1);
-                product.Quantity -= shipmentProduct.Quantity;
-                db.SaveChanges();
+                var toWarehouse = await db.Warehouse.FindAsync(shipmentProduct.Shipment.ToWarehouseId);
+                if (toWarehouse == null)
+                {
+                    throw new InvalidOperationException("Warehouse not found.");
+                }
+                var varmi = db.Product.Where(x => x.Name == shipmentProduct.Product.Name && x.WarehouseId == toWarehouse.Id).FirstOrDefault();
+                if (varmi != null)
+                {
+                    varmi.Quantity += shipmentProduct.Quantity;
+                    db.Product.Update(varmi);
+                }
+                else
+                {
+                    var newProduct = new Product
+                    {
+                        Name = shipmentProduct.Product.Name,
+                        Quantity = shipmentProduct.Quantity,
+                        Description = shipmentProduct.Product.Description,
+                        CategoryId = shipmentProduct.Product.CategoryId,
+                        WarehouseId = toWarehouse.Id
+                    };
+
+                    db.Product.Add(newProduct);
+                }
+                if (shipmentProduct.Quantity == shipmentProduct.Product.Quantity)
+                {
+                    db.Product.Remove(shipmentProduct.Product);
+                }
+                else
+                {
+                    shipmentProduct.Product.Quantity -= shipmentProduct.Quantity;
+                }
+
+                await db.SaveChangesAsync();
                 result = true;
             }
-            else if (shipmentProduct.Quantity == shipmentProduct.Product.Quantity)
-            {
-                var to = db.Warehouse.Find(shipmentProduct.Shipment.ToWarehouseId);
-                var product = db.Product.Find(shipmentProduct.ProductId);
-                Product product1 = new Product();
-                product1.Name = product.Name;
-                product1.Quantity = shipmentProduct.Quantity;
-                product1.Description = product.Description;
-                product1.CategoryId = product.CategoryId;
-                product1.WarehouseId = to.Id;
-                db.Product.Add(product1);
-                db.Product.Remove(product);
-                db.SaveChanges();
-                result = true;
-            }
-            else
-            {
-                result = false;
-            }
-            db.SaveChanges();
-            return Task.FromResult(result);
+
+            return result;
         }
 
-        public Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            var result = false;
-            var shipmentProduct = db.ShipmentProduct.FirstOrDefault(c => c.Id == id);
+            bool result = false;
+            var shipmentProduct = await db.ShipmentProduct.FindAsync(id);
 
             if (shipmentProduct != null)
             {
                 db.ShipmentProduct.Remove(shipmentProduct);
+                await db.SaveChangesAsync();
                 result = true;
             }
 
-            return Task.FromResult(result);
+            return result;
         }
 
         public Task<List<ShipmentProduct>> GetAllAsync()
         {
-            var list = db.ShipmentProduct.Include(x => x.Product).Include(x => x.Shipment).ToListAsync();
-            return list;
+            return db.ShipmentProduct.Include(x => x.Product).Include(x => x.Shipment).ToListAsync();
         }
 
         public Task<ShipmentProduct> GetByIdAsync(int id)
         {
-            var shipmentProduct = db.ShipmentProduct.FirstOrDefaultAsync(c => c.Id == id);
-
-            return shipmentProduct;
+            return db.ShipmentProduct.Include(x => x.Product).Include(x => x.Shipment).FirstOrDefaultAsync(c => c.Id == id);
         }
     }
 }

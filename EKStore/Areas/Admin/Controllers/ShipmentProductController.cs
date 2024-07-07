@@ -48,14 +48,21 @@ namespace EKStore.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ShipmentProduct shipmentProduct)
         {
-            if (shipmentProduct == null)
+            if (ModelState.IsValid)
             {
-                TempData["Message"] = "ShipmentProduct cannot be null.";
-                return View();
+                var result = await service.AddAsync(shipmentProduct);
+                if (result)
+                {
+                    TempData["Message"] = "Product shipment created successfully.";
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ModelState.AddModelError("", "There was an error creating the product shipment.");
+                }
             }
 
-            TempData["Message"] = await service.AddAsync(shipmentProduct) ? "ShipmentProduct Added Successfully" : "Failed to add ShipmentProduct.";
-            return View();
+            return View(shipmentProduct);
         }
 
         // GET: ProductController/Edit/5
