@@ -18,11 +18,10 @@
                 @Html.DisplayNameFor(model => model.Id)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FromWarehouseId)
-
+                From
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ToWarehouseId)
+                To
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ShipmentDate)
@@ -62,7 +61,7 @@
                     @Html.DisplayFor(modelItem => item.Driver.FirstName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Cost)
+                    @Html.DisplayFor(modelItem => item.Cost) TL
                 </td>
                 <td>
                     <a asp-area="Admin" asp-controller="Warehouse" asp-action="Edit" asp-route-id="@item.Id"

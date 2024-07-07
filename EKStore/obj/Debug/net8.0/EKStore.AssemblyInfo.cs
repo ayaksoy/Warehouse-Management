@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EKStore")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d35d7a02f59c05c3012f8e8f7c5d3d44482ce85e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4c0dd1e931e7e741fe4d490edc3f2f7fce4e15cb")]
 [assembly: System.Reflection.AssemblyProductAttribute("EKStore")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EKStore")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

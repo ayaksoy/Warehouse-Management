@@ -97,7 +97,8 @@ namespace EKStore.Areas.Admin.Controllers
         public IActionResult Detail(int id)
         {
             var warehouse = db.Warehouse
-                .Include(w => w.Products) // Ensure products are included
+                .Include(w => w.Products)
+                    .ThenInclude(p => p.Category)
                 .FirstOrDefault(w => w.Id == id);
 
             if (warehouse == null)
@@ -107,6 +108,7 @@ namespace EKStore.Areas.Admin.Controllers
 
             return View(warehouse);
         }
+
 
     }
 }
